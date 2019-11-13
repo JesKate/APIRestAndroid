@@ -27,12 +27,35 @@ else
 
 app.listen(3000,()=>console.log('Server is running at port 3000:::' ));
 
-//read all users in data base
+//read all users in data base/leer todos los usuarios en la bd
 app.get('/users',(req,res)=>{
     mysqlconnection.query('SELECT * FROM users',(err,rows,fields)=>{
         if(!err){
             console.log(rows);
             res.send(rows);
+        }else{
+            console.log(err);
+        }
+    })
+});
+//leer un solo usuario
+app.get('/users/:id',(req,res)=>{
+    mysqlconnection.query('SELECT * FROM users WHERE id= ?',[req.params.id],(err,rows,fields)=>{
+        if(!err){
+            console.log(rows);
+            res.send(rows);
+        }else{
+            console.log(err);
+        }
+    })
+});
+
+//eliminar un solo usuario
+app.delete('/users/:id',(req,res)=>{
+    mysqlconnection.query('DELETE * FROM users WHERE id= ?',[req.params.id],(err,rows,fields)=>{
+        if(!err){
+            console.log('User has been deleted');
+            res.send('User has been deleted');
         }else{
             console.log(err);
         }
